@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PromptVerse – AI Prompts, AI Models & New Games</title>
+<meta name="description" content="Free AI prompts and the newest AI models, all in one place.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--a:#6366f1;--b:#06b6d4;--c:#ec4899;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1020;--card:#131a2e;--text:#e8ecf8;--muted:#94a3b8;--line:#243049;color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+.hero{background:linear-gradient(135deg,var(--a),var(--c) 55%,var(--b));color:#fff;padding:44px 0 56px;text-align:center}
+.hero h1{margin:0 0 8px;font-size:clamp(30px,7vw,48px);letter-spacing:-.5px}
+.hero p{margin:0 auto;max-width:560px;opacity:.95}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:-26px auto 18px;position:relative}
+.tab{border:0;cursor:pointer;padding:12px 22px;border-radius:999px;font:600 15px inherit;background:var(--card);color:var(--text);box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.tab.on{background:linear-gradient(135deg,var(--a),var(--c));color:#fff}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+.tools input{flex:1 1 220px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--text);padding:6px 14px;border-radius:999px;cursor:pointer;font-size:14px}
+.chip.on{background:var(--a);border-color:var(--a);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card h3{margin:0;font-size:17px}
+.tag{align-self:flex-start;font-size:12px;font-weight:600;color:#fff;padding:3px 10px;border-radius:999px;background:linear-gradient(135deg,var(--a),var(--b))}
+.prompt{background:var(--bg);border-radius:12px;padding:10px 12px;font-size:14px;color:var(--muted);white-space:pre-wrap;max-height:150px;overflow:auto}
+.desc{color:var(--muted);font-size:14px;margin:0}
+.btn{margin-top:auto;display:inline-block;text-align:center;border:0;cursor:pointer;text-decoration:none;padding:10px 16px;border-radius:12px;color:#fff;font:600 14px inherit;background:linear-gradient(135deg,var(--a),var(--c))}
+.ad{margin:22px 0;min-height:90px;border:1px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+.empty{text-align:center;color:var(--muted);padding:30px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 16px}
+[hidden]{display:none!important}
+.admin{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:20px 0;display:grid;gap:10px}
+.admin input,.admin textarea,.admin select{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;width:100%}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <h1>✨ PromptVerse</h1>
+  <p>Free AI prompts you can copy in one tap, plus new AI models and new games to try.</p>
+</div></header>
+
+<main class="wrap">
+  <div class="tabs">
+    <button class="tab on" data-t="prompts">Prompts</button>
+    <button class="tab" data-t="models">AI Models</button>
+    <button class="tab" data-t="games">New Games</button>
+  </div>
+  <div class="tools"><input id="q" type="search" placeholder="Search…" aria-label="Search"></div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>Nothing found.</div>
+
+  <!-- AD SLOT: paste your ad network code inside this div -->
+  <div class="ad" id="ad1">Ad space</div>
+
+  <section class="admin" id="admin" hidden>
+    <h3 style="margin:0">Admin helper</h3>
+    <p class="desc">Fill the form, copy the line, and paste it into the matching list in index.html.</p>
+    <select id="aType"><option value="p">Prompt</option><option value="m">AI Model</option><option value="g">Game</option></select>
+    <input id="aTitle" placeholder="Title / model name">
+    <input id="aCat" placeholder="Category (e.g. Writing, Chat, Android, PC)">
+    <textarea id="aText" rows="4" placeholder="Prompt text, or short description for a model"></textarea>
+    <input id="aUrl" placeholder="Model / game link (https://…)">
+    <button class="btn" id="aGen" type="button">Generate line</button>
+    <p class="desc">Prompt → PROMPTS list · AI Model → MODELS list · Game → GAMES list</p>
+    <textarea id="aOut" rows="5" readonly></textarea>
+    <button class="btn" id="aCopy" type="button">Copy</button>
+  </section>
+</main>
+<footer>© <span id="y"></span> PromptVerse · Links open the official websites of each AI tool.</footer>
+
+<script>
+/* ====== EDIT HERE: add your prompts (newest first) ====== */
+const PROMPTS = [
+  {title:"Blog post writer",cat:"Writing",text:"Act as an expert content writer. Write a 600-word blog post about [TOPIC] for [AUDIENCE]. Use a friendly tone, short paragraphs, and end with a call to action."},
+  {title:"Explain like I’m 10",cat:"Learning",text:"Explain [TOPIC] as if I were 10 years old. Use a simple example from daily life and finish with 3 quiz questions."},
+  {title:"Code reviewer",cat:"Coding",text:"You are a senior developer. Review the code below, find bugs, suggest improvements, and explain each change briefly:\n\n[PASTE CODE]"},
+  {title:"Image prompt – cinematic",cat:"Image",text:"A cinematic photo of [SUBJECT], golden hour light, shallow depth of field, 35mm lens, ultra-detailed, 4k"},
+  {title:"Job interview coach",cat:"Career",text:"Act as an interviewer for the role of [JOB]. Ask me one question at a time, wait for my answer, then give feedback and a score out of 10."}
+];
+/* ====== EDIT HERE: add new AI models (newest first) ====== */
+const MODELS = [
+  {title:"Gemini",cat:"Chat",text:"Google’s AI assistant for chat, writing and images.",url:"https://gemini.google.com"},
+  {title:"ChatGPT",cat:"Chat",text:"OpenAI’s popular assistant for writing, coding and study.",url:"https://chatgpt.com"},
+  {title:"Claude",cat:"Chat",text:"Anthropic’s assistant, strong at writing, analysis and code.",url:"https://claude.ai"},
+  {title:"Google AI Studio",cat:"Developer",text:"Try Google’s models and build with them for free.",url:"https://aistudio.google.com"},
+  {title:"Perplexity",cat:"Search",text:"AI search engine that answers with sources.",url:"https://www.perplexity.ai"}
+];
+/* ====== EDIT HERE: add new games (newest first) ====== */
+const GAMES = [
+  {title:"Google Play Games",cat:"Android",text:"Browse the newest and trending Android games.",url:"https://play.google.com/store/games"},
+  {title:"Steam – New & Trending",cat:"PC",text:"Fresh PC game releases and popular new titles.",url:"https://store.steampowered.com/explore/new/"},
+  {title:"Epic Games Store",cat:"PC",text:"Free weekly games and new releases.",url:"https://store.epicgames.com"},
+  {title:"App Store Games",cat:"iPhone",text:"Discover new iPhone and iPad games.",url:"https://apps.apple.com/us/charts/iphone/games-chart/6014"}
+];
+/* ================================================== */
+
+const $=s=>document.querySelector(s);
+let tab="prompts",cat="All";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function render(){
+  const data=tab==="prompts"?PROMPTS:tab==="games"?GAMES:MODELS, q=$("#q").value.toLowerCase();
+  const cats=["All",...new Set(data.map(d=>d.cat))];
+  if(!cats.includes(cat))cat="All";
+  $("#chips").innerHTML=cats.map(c=>`<button class="chip ${c===cat?"on":""}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+  const list=data.filter(d=>(cat==="All"||d.cat===cat)&&(d.title+d.text+d.cat).toLowerCase().includes(q));
+  $("#empty").hidden=list.length>0;
+  $("#grid").innerHTML=list.map((d,i)=>tab==="prompts"
+   ?`<article class="card"><span class="tag">${esc(d.cat)}</span><h3>${esc(d.title)}</h3><div class="prompt">${esc(d.text)}</div><button class="btn" data-copy="${i}" data-title="${esc(d.title)}">Copy prompt</button></article>`
+   :`<article class="card"><span class="tag">${esc(d.cat)}</span><h3>${esc(d.title)}</h3><p class="desc">${esc(d.text)}</p><a class="btn" href="${esc(d.url)}" target="_blank" rel="noopener noreferrer">Try it →</a></article>`).join("");
+  $("#grid").dataset.list=JSON.stringify(list.map(d=>d.text));
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest(".tab");
+  if(t){tab=t.dataset.t;cat="All";document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===t));render();}
+  const c=e.target.closest(".chip");
+  if(c){cat=c.dataset.c;render();}
+  const b=e.target.closest("[data-copy]");
+  if(b){const txt=JSON.parse($("#grid").dataset.list)[b.dataset.copy];
+    (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>{b.textContent="Copied ✓"}).catch(()=>{b.textContent="Press and hold to copy"});
+    setTimeout(()=>{b.textContent="Copy prompt"},1800);}
+});
+$("#q").addEventListener("input",render);
+$("#y").textContent=new Date().getFullYear();
+
+/* Admin helper: open your site with #admin at the end */
+function admin(){$("#admin").hidden=location.hash!=="#admin";}
+addEventListener("hashchange",admin);admin();
+$("#aGen").onclick=()=>{
+  const j=s=>JSON.stringify(s), t=$("#aTitle").value, c=$("#aCat").value||"General", x=$("#aText").value;
+  $("#aOut").value=$("#aType").value==="p"
+    ?`  {title:${j(t)},cat:${j(c)},text:${j(x)}},`
+    :`  {title:${j(t)},cat:${j(c)},text:${j(x)},url:${j($("#aUrl").value)}},`;
+};
+$("#aCopy").onclick=()=>{const o=$("#aOut");o.select();navigator.clipboard&&navigator.clipboard.writeText(o.value);};
+render();
+</script>
+</body>
+</html>
